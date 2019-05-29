@@ -1,15 +1,17 @@
 \noindent
-\textbf{Monocular-Based Collision Avoidance.} Existing monocular collision avoidance systems mostly focus on avoiding the immediate collision at the current time instant. Learning to fly by crashing \cite{gandhi} presented the idea of supervised learning to navigate an unmanned aerial vehicle (UAV) in indoor environments. The authors create a large dataset of UAV crashes and train an AlexNet \cite{alexnet} with single image as input to predict from one of these three actions - go straight, turn left or turn right. Similarly, DroNet \cite{DroNet} trains a ResNet-8 \cite{resnet} to safely navigate a UAV through the streets of the city.
+\section{Monocular-Based Collision Avoidance} 
+
+Existing monocular collision avoidance systems mostly focus on avoiding the immediate collision at the current time instant. Learning to fly by crashing \cite{gandhi} presented the idea of supervised learning to navigate an unmanned aerial vehicle (UAV) in indoor environments. The authors create a large dataset of UAV crashes and train an AlexNet \cite{alexnet} with single image as input to predict from one of these three actions - go straight, turn left or turn right. Similarly, DroNet \cite{DroNet} trains a ResNet-8 \cite{resnet} to safely navigate a UAV through the streets of the city.
 % in contrast to traditional map-localize-plan approach. 
 DroNet takes the images from an on-board monocular camera on UAV and outputs a steering angle along with the collision probability. 
 
 While predicting an action to avoid the immediate collision is useful, it is more desirable to predict a possible collision in the short future.
 
-Therefore, our work focuses on forecasting the exact time to a possible collision occurring within next 6 seconds, which will be helpful for collision avoidance in the context of dynamic path planning \cite{SIPP}, \cite{time-bounded}, \cite{vemula2016path}.   
-
+Therefore, our work focuses on forecasting the exact time to a possible collision occurring within next 6 seconds, which will be helpful for collision avoidance in the context of dynamic path planning \cite{SIPP}, \cite{time-bounded}, \cite{vemula2016path}. For planning in the presence of dynamic obstacles, SIPP \cite{SIPP} defines a safe interval as a contiguous period of time during which there is no collision. While the number of timesteps may be unbounded, the number of safe intervals is finite making the search space tractable for the planner. Our approach finds the collision time in real-time and thus can be useful for SIPP planner to define safe interval. Another path planning algorithm called time-bounded lattice \cite{time-bounded} merges together short-term planning in time with less expensive long-term planning without time. This planner computes a single bound for how long the planning should be done in time. The near-collision time predicted by our approach can thus serve the purpose of deciding the time bound for the short-term planning episode.    
 
 \noindent\\
-\textbf{Predicting Time to Collision by Human Trajectory.}
+\section{Predicting Time to Collision by Human Trajectory}
+
 Instead of predicting the time to collision directly from images, one can also predict the human trajectories \cite{socialGAN}, \cite{socialLSTM}, \cite{anirudh}, \cite{2009YoullNW}, \cite{ziebart2009planning} as the first step, then the time to collision can be predicted based on the speed and heading directions of all the surrounding pedestrians.
 % \textcolor{red}{need brief explanation for each paper here.}
 \cite{2009YoullNW} introduces a dynamic model for human trajectory prediction in a crowd scene by modeling not only the history trajectory but also the surrounding environment. \cite{socialLSTM} proposes a LSTM model to learn general human movement pattern and thus can predict better future trajectory. As there are many plausible way that humans can move, \cite{socialGAN} proposes to predict diverse future trajectories instead of a deterministic one. \cite{anirudh} proposes an attention model, which captures the relative importance of each surrounding pedestrian when navigating in the crowd, irrespective of their proximity.
@@ -21,7 +23,9 @@ In contrast, our approach can predict the time to collision directly from a sequ
 
 
 \noindent\\
-\textbf{Learning Spatio-Temporal Feature Representation.} Existing video architectures for spatio-temporal feature learning can be split into two major categories. To leverage the significant success from image-based backbone architectures (\emph{e.g.}, VGG and ResNet) pre-trained on large-scale image datasets such as ImageNet \cite{imagenet} and PASCAL VOC \cite{pascalVOC}, methods in the first category reuse the 2D ConvNet to extract features from a sequence of images with as minimal modificationas as possible. For example, \cite{BeyondSS} proposes to extract the image-based features independently from each frame using GoogLeNet and then apply a LSTM \cite{lstm} on the top for feature aggregation for video action recognition.
+\section{Learning Spatio-Temporal Feature Representation}
+
+Existing video architectures for spatio-temporal feature learning can be split into two major categories. To leverage the significant success from image-based backbone architectures (\emph{e.g.}, VGG and ResNet) pre-trained on large-scale image datasets such as ImageNet \cite{imagenet} and PASCAL VOC \cite{pascalVOC}, methods in the first category reuse the 2D ConvNet to extract features from a sequence of images with as minimal modificationas as possible. For example, \cite{BeyondSS} proposes to extract the image-based features independently from each frame using GoogLeNet and then apply a LSTM \cite{lstm} on the top for feature aggregation for video action recognition.
 
 The second category methods explore the use of 3D ConvNets for video tasks \cite{C3D}, \cite{videoResNet}, \cite{p3d}, \cite{two-stream} that directly operate 3D spatio-temporal kernels on video inputs. While it is natural to use 3D ConvNets for spatio-temporal feature learning, 3D ConvNets are unable to leverage the benefits of ImageNet pretraining easily and often have huge number of parameters which makes it most likely to overfit on small datasets. Recently, the two-stream inflated 3D ConvNet (I3D) \cite{i3d} is proposed to mitigate these disadvantages by inflating the ImageNet-pretrained 2D weights to 3D. Also, the proposed large-scale video dataset, Kinetics, has shown to be very successful for 3D kernel pre-training.
  

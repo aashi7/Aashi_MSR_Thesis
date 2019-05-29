@@ -41,6 +41,14 @@
 %Table of contents stuff
 \setcounter{tocdepth}{1}
 
+\newcommand\MyBox[2]{
+  \fbox{\lower0.75cm
+    \vbox to 1.5cm{\vfil
+      \hbox to 1.5cm{\hfil\parbox{1.2cm}{#1\\#2}\hfil}
+      \vfil}%
+  }%
+}
+
 \begin{document}
 
 \title{2 Legit 2 Quit}
@@ -105,11 +113,17 @@
 
 \clearpage
 
-\chapter{Discussion}
+\chapter{Conclusion}
 \label{chap:discussion}
 \input{discussion.tex}
 
 \clearpage
+
+\chapter{Future Work}
+\label{chap:future_work}
+\input{future_work.tex}
+
+\clearpage 
 
 %Include references using bst and bib files.
 \bibliographystyle{finitplain} 
